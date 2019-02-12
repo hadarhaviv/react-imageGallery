@@ -2,15 +2,21 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as ImagesActions from "../../actions/images";
+import Modal from "../UI/Modal/Modal";
+import withErrorHandler from "../hoc/withErrorHandler/withErrorHandler";
+import axios from "axios";
 
 class Uploader extends Component {
   state = {
-    file: "null",
+    file: null,
     hashtags: ""
   };
 
+  componentDidMount() {
+    this.props.actions.uploadImageInit();
+  }
+
   onFormSubmit = e => {
-    // e.preventDefault();
     let hashtagString = this.state.hashtags;
     hashtagString = hashtagString.replace(/\s/g, "");
     if (hashtagString.charAt(0) === "#") {
@@ -44,6 +50,13 @@ class Uploader extends Component {
     });
   };
 
+  closeUpload = () => {
+    this.setState({ showModal: false });
+    setTimeout(() => {
+      this.props.history.push("/search");
+    }, 500);
+  };
+
   render() {
     let fileTitle = "Choose File";
     if (this.state.file) {
@@ -57,12 +70,13 @@ class Uploader extends Component {
           <div className="input-group-prepend">
             <div className="input-group-prepend">
               <button
+                disabled={this.state.file === null ? true : false}
                 onClick={this.onFormSubmit}
                 className="btn btn-outline-secondary"
                 type="button"
                 id="inputGroupFileAddon03"
               >
-                Button
+                UPLOAD
               </button>
             </div>
           </div>
@@ -92,16 +106,27 @@ class Uploader extends Component {
             aria-describedby="inputGroup-sizing-default"
           />
         </div>
+        <Modal show={this.props.isSuccess}>
+          <p>Image Uploaded Sucsessfully!</p>
+          <button onClick={this.closeUpload}>CLOSE</button>
+        </Modal>
       </div>
     );
   }
+}
+
+function mapStateToProps(state) {
+  return {
+    isSuccess: state.images.uploadImage.success
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(
       {
-        uploadImage: ImagesActions.uploadImage
+        uploadImage: ImagesActions.uploadImage,
+        uploadImageInit: ImagesActions.uploadImageInit
       },
       dispatch
     )
@@ -109,6 +134,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
-)(Uploader);
+)(withErrorHandler(Uploader, axios));

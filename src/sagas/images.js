@@ -14,9 +14,7 @@ function* getAllImages() {
 
 function* getImagesByHashTag(action) {
   try {
-    console.log("getImagesByHashTag in saga: ", action);
     const result = yield call(api.getImagesByHashtagService, action.payload);
-    console.log("results: ", result);
     yield put(actions.getImagesDone(result.data));
   } catch (e) {
     console.log(e);
@@ -26,6 +24,7 @@ function* getImagesByHashTag(action) {
 function* uploadImage(action) {
   try {
     const result = yield call(api.UploadImageService, action);
+    yield put(actions.uploadImageDone(result.data));
   } catch (e) {
     console.log(e);
   }

@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as ImagesActions from "../../actions/images";
+import withErrorHandler from "../hoc/withErrorHandler/withErrorHandler";
+import axios from "axios";
+import "./Search.css";
 
 class Search extends Component {
   state = {
@@ -19,13 +22,12 @@ class Search extends Component {
   };
 
   searchImages = () => {
-    console.log("search value: ", this.state.searchValue);
     this.props.actions.getImagesByHashtag(this.state.searchValue);
   };
   render() {
     const myImages = this.props.images.map(image => {
       return (
-        <div key={image._id} className="card col-4">
+        <div key={image._id} className="card col-4 mt-3">
           <img className="card-img-top" src={image.path} alt="Card cap" />
         </div>
       );
@@ -41,8 +43,8 @@ class Search extends Component {
               onChange={this.handleInputChange}
               name="searchValue"
               className="form-control"
-              placeholder="search hastag"
-              aria-label="search hastag"
+              placeholder="Search For Hashtag"
+              aria-label="Search For Hashtag"
               aria-describedby="basic-addon2"
             />
             <div className="input-group-append">
@@ -83,4 +85,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Search);
+)(withErrorHandler(Search, axios));

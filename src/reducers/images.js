@@ -1,7 +1,8 @@
 import Types from "../actions/actionsTypes";
 
 const INITIAL_STATE = {
-  images: []
+  images: [],
+  uploadImage: { success: false }
 };
 
 export default function images(state = INITIAL_STATE, action) {
@@ -10,6 +11,22 @@ export default function images(state = INITIAL_STATE, action) {
       return {
         ...state,
         images: action.images
+      };
+    }
+    case Types.UPLOAD_IMAGE_DONE: {
+      let uploadDetails = {};
+      uploadDetails.success = true;
+      return {
+        ...state,
+        uploadImage: uploadDetails
+      };
+    }
+    case Types.UPLOAD_IMAGE_INIT: {
+      let uploadImage = {};
+      uploadImage.success = false;
+      return {
+        ...state,
+        uploadImage
       };
     }
     default: {
