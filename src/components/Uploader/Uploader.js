@@ -7,10 +7,13 @@ import withErrorHandler from "../hoc/withErrorHandler/withErrorHandler";
 import axios from "axios";
 
 class Uploader extends Component {
-  state = {
-    file: null,
-    hashtags: ""
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      file: null,
+      hashtags: ""
+    };
+  }
 
   componentDidMount() {
     this.props.actions.uploadImageInit();
