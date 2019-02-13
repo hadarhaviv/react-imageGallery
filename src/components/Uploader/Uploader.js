@@ -65,51 +65,61 @@ class Uploader extends Component {
 
     return (
       <div>
-        <h1>Image Upload</h1>
-        <div className="input-group mb-3">
-          <div className="input-group-prepend">
+        <h1 className="display-4 text-center">Image Upload</h1>
+        <div className="mx-auto">
+          <div className="input-group mt-5">
             <div className="input-group-prepend">
-              <button
-                disabled={this.state.file === null ? true : false}
-                onClick={this.onFormSubmit}
-                className="btn btn-outline-secondary"
-                type="button"
-                id="inputGroupFileAddon03"
+              <div className="input-group-prepend">
+                <button
+                  disabled={this.state.file === null ? true : false}
+                  onClick={this.onFormSubmit}
+                  className="btn btn-outline-secondary"
+                  type="button"
+                  id="inputGroupFileAddon03"
+                >
+                  UPLOAD
+                </button>
+              </div>
+            </div>
+            <div className="custom-file">
+              <input
+                name="image-file"
+                type="file"
+                className="darker_border custom-file-input"
+                onChange={this.onChange}
+                id="inputGroupFile01"
+                aria-describedby="inputGroupFileAddon01"
+              />
+              <label
+                className="darker_border custom-file-label"
+                htmlFor="inputGroupFile01"
               >
-                UPLOAD
-              </button>
+                {fileTitle}
+              </label>
             </div>
           </div>
-          <div className="custom-file">
+          <p className="mb-0 mt-3">
+            Enter Hashtags that describe your pic in the best way
+          </p>
+          <div className="input-group mb-3">
             <input
-              name="image-file"
-              type="file"
-              className="custom-file-input"
-              onChange={this.onChange}
-              id="inputGroupFile01"
-              aria-describedby="inputGroupFileAddon01"
+              disabled={this.state.file === null ? true : false}
+              style={{ borderRadius: "0.8rem" }}
+              onChange={this.handleHashtagChange}
+              value={this.state.hashtags}
+              type="text"
+              name="hashtags"
+              className="darker_border form-control"
+              aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-default"
+              placeholder=""
             />
-            <label className="custom-file-label" htmlFor="inputGroupFile01">
-              {fileTitle}
-            </label>
           </div>
+          <Modal show={this.props.isSuccess}>
+            <p>Image Uploaded Sucsessfully!</p>
+            <button onClick={this.closeUpload}>CLOSE</button>
+          </Modal>
         </div>
-        hashtags:
-        <div className="input-group mb-3">
-          <input
-            onChange={this.handleHashtagChange}
-            value={this.state.hashtags}
-            type="text"
-            name="hashtags"
-            className="form-control"
-            aria-label="Sizing example input"
-            aria-describedby="inputGroup-sizing-default"
-          />
-        </div>
-        <Modal show={this.props.isSuccess}>
-          <p>Image Uploaded Sucsessfully!</p>
-          <button onClick={this.closeUpload}>CLOSE</button>
-        </Modal>
       </div>
     );
   }

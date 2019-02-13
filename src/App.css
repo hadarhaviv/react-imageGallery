@@ -1,6 +1,8 @@
-.App {
+/* .App {
   text-align: center;
-}
+} */
+
+@import url("https://fonts.googleapis.com/css?family=Dekko|Hi+Melody|Open+Sans");
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
@@ -20,6 +22,18 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.darker_border {
+  border-color: rgba(0, 0, 0, 0.29);
+  font-family: "Dekko", cursive;
+}
+
+h1 {
+  color: #331f3a;
+}
+p {
+  color: #adadc4;
 }
 
 @keyframes App-logo-spin {

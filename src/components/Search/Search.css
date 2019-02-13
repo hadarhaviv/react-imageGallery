@@ -1,4 +1,20 @@
-/* .card {
-  width: 20rem;
-  height: auto;
-} */
+@import url("https://fonts.googleapis.com/css?family=Hi+Melody|Open+Sans");
+
+.hashtag {
+  font-family: "Hi Melody", cursive;
+  font-size: 1.5rem;
+  display: contents;
+}
+.card {
+  border-radius: 1.25rem;
+}
+
+.card img {
+  display: block;
+  margin: auto;
+  width: 80%;
+}
+
+.col-4 {
+  max-width: 28%;
+}

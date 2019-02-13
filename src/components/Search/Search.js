@@ -8,7 +8,8 @@ import "./Search.css";
 
 class Search extends Component {
   state = {
-    searchValue: ""
+    searchValue: "",
+    timer: null
   };
 
   componentDidMount() {
@@ -16,18 +17,42 @@ class Search extends Component {
   }
 
   handleInputChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
+    this.setState(
+      {
+        [e.target.name]: e.target.value
+      },
+      () => {
+        this.searchImages();
+      }
+    );
   };
 
   searchImages = () => {
-    this.props.actions.getImagesByHashtag(this.state.searchValue);
+    if (
+      !(
+        this.state.searchValue.length === 1 &&
+        this.state.searchValue.charAt(0) === "#"
+      )
+    ) {
+      let searchStr = this.state.searchValue.replace(/#/g, "");
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => {
+        this.props.actions.getImagesByHashtag(searchStr);
+      }, 500);
+    }
   };
+
   render() {
     const myImages = this.props.images.map(image => {
       return (
-        <div key={image._id} className="card col-4 mt-3">
+        <div key={image._id} className="darker_border card col-4 m-3">
+          {image.hashtags.map(hashtag => {
+            return (
+              <span key={`${image._id}_${hashtag}`} className="hashtag">
+                #{hashtag}
+              </span>
+            );
+          })}
           <img className="card-img-top" src={image.path} alt="Card cap" />
         </div>
       );
@@ -35,30 +60,23 @@ class Search extends Component {
 
     return (
       <div>
+        <h1 className="display-4 text-center">My Gallery</h1>
         <div>
-          <div className="input-group mb-3">
+          <div className="input-group mb-3 mt-5">
             <input
+              style={{ borderRadius: "0.8rem" }}
               type="text"
               value={this.state.searchValue}
               onChange={this.handleInputChange}
               name="searchValue"
-              className="form-control"
+              className="darker_border form-control"
               placeholder="Search For Hashtag"
               aria-label="Search For Hashtag"
               aria-describedby="basic-addon2"
             />
-            <div className="input-group-append">
-              <button
-                onClick={this.searchImages}
-                className="btn btn-outline-secondary"
-                type="button"
-              >
-                Search
-              </button>
-            </div>
           </div>
         </div>
-        <div className="row">{myImages}</div>
+        <div className="row d-flex justify-content-between">{myImages}</div>
       </div>
     );
   }
